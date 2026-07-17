@@ -113,7 +113,42 @@ const deleteTourById=(req,res)=>{
         data:null
     });
 };
- 
+
+const getAllUsers=(req,res)=>{
+    res.status(500).json({
+        status:"error",
+        message:"This route is not yet defined"
+    });
+}
+
+const createUser=(req,res)=>{
+    res.status(500).json({
+        status:"error",
+        message:"This route is not yet defined"
+    });
+}
+
+
+const getUserById=(req,res)=>{
+    res.status(500).json({
+        status:"error",
+        message:"This route is not yet defined"
+    });
+}
+
+const updateUserById=(req,res)=>{
+    res.status(500).json({
+        status:"error",
+        message:"This route is not yet defined"
+    });
+}
+
+const deleteUserById=(req,res)=>{
+    res.status(500).json({
+        status:"error",
+        message:"This route is not yet defined"
+    });
+}
 // app.get("/api/v1/tours",getAllTours);
 // app.post("/api/v1/tours",createTour);
 // app.get("/api/v1/tours/:id",getTourById);
@@ -121,9 +156,15 @@ const deleteTourById=(req,res)=>{
 // app.delete("/api/v1/tours/:id",deleteTourById);
 
 //3) ROUTES
+const toursRouter=express.Router();
+const usersRouter=express.Router();
+app.use("/api/v1/tours",toursRouter);
+app.use("/api/v1/users",usersRouter);
 
-app.route("/api/v1/tours").get(getAllTours).post(createTour);
-app.route("/api/v1/tours/:id").get(getTourById).patch(updateTourById).delete(deleteTourById);
+toursRouter.route("/").get(getAllTours).post(createTour);
+toursRouter.route("/:id").get(getTourById).patch(updateTourById).delete(deleteTourById);
+usersRouter.route("/").get(getAllUsers).post(createUser);
+usersRouter.route("/:id").get(getUserById).patch(updateUserById).delete(deleteUserById);
 
 
 //4) START SERVER
