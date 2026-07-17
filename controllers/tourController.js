@@ -25,12 +25,6 @@ const createTour=(req,res)=>{
 const getTourById=(req,res)=>{
     const id=req.params.id;
     const tour=toursData.find(tour=>tour.id===parseInt(id));
-    if(!tour){
-        return res.status(404).json({
-            status:"fail",
-            message:"Tour not found"
-        });
-    }
     res.status(200).json({
         status:"success",
         data:tour
@@ -40,12 +34,6 @@ const getTourById=(req,res)=>{
 const updateTourById=(req,res)=>{
     const id=req.params.id;
     const tour=toursData.find(tour=>tour.id===parseInt(id));
-    if(!tour){
-        return res.status(404).json({
-            status:"fail",
-            message:"Tour not found"
-        });
-    }
     const updatedTour=Object.assign(tour,req.body);
     fs.writeFileSync(`${__dirname}/../constant/tours-data.json`,JSON.stringify(toursData));
     res.status(200).json({
@@ -55,15 +43,21 @@ const updateTourById=(req,res)=>{
 };
 
 
-const deleteTourById=(req,res)=>{
-    const id=req.params.id;
-    const tour=toursData.find(tour=>tour.id===parseInt(id));
+const checkTourId=(req,res,next,val)=>{
+    console.log(`Tour id is: ${val}`);
+    const tour=toursData.find(tour=>tour.id===parseInt(val));
     if(!tour){
         return res.status(404).json({
             status:"fail",
             message:"Tour not found"
         });
     }
+    next();
+};
+
+const deleteTourById=(req,res)=>{
+    const id=req.params.id;
+    const tour=toursData.find(tour=>tour.id===parseInt(id));
     const index=toursData.indexOf(tour);
     toursData.splice(index,1);
     fs.writeFileSync(`${__dirname}/../constant/tours-data.json`,JSON.stringify(toursData));
@@ -78,5 +72,6 @@ module.exports={
     createTour,
     getTourById,
     updateTourById,
-    deleteTourById
+    deleteTourById,
+    checkTourId
 };
