@@ -1,6 +1,29 @@
 const fs=require("fs");
 const toursData=JSON.parse(fs.readFileSync(`${__dirname}/../constant/tours-data.json`,"utf-8"));
 
+// MIDDLEWARES
+const checkTourId=(req,res,next,val)=>{
+    console.log(`Tour id is: ${val}`);
+    const tour=toursData.find(tour=>tour.id===parseInt(val));
+    if(!tour){
+        return res.status(404).json({
+            status:"fail",
+            message:"Tour not found"
+        });
+    }
+    next();
+};
+
+const checkBody=(req,res,next)=>{
+    if(!req.body.name || !req.body.price){
+        return res.status(400).json({
+            status:"fail",
+            message:"Tour name and price are required"
+        });
+    }
+    next();
+}
+
 const getAllTours=(req,res)=>{
     console.log(req.requestTime);
     res.status(200).json({
@@ -43,17 +66,7 @@ const updateTourById=(req,res)=>{
 };
 
 
-const checkTourId=(req,res,next,val)=>{
-    console.log(`Tour id is: ${val}`);
-    const tour=toursData.find(tour=>tour.id===parseInt(val));
-    if(!tour){
-        return res.status(404).json({
-            status:"fail",
-            message:"Tour not found"
-        });
-    }
-    next();
-};
+
 
 const deleteTourById=(req,res)=>{
     const id=req.params.id;
@@ -73,5 +86,6 @@ module.exports={
     getTourById,
     updateTourById,
     deleteTourById,
-    checkTourId
+    checkTourId,
+    checkBody
 };
